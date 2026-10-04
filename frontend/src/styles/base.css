@@ -1,0 +1,284 @@
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+:focus-visible {
+  outline: 3px solid var(--pencil);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+::selection {
+  background: var(--pencil);
+  color: var(--ink);
+}
+.visually-hidden-focusable:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+.visually-hidden-focusable:focus {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 2000;
+  background: var(--pencil);
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+/* Botones */
+.btn-ink,
+.btn-pencil,
+.btn-quiet,
+.btn-danger-soft {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font: 600 0.925rem/1 var(--font-body);
+  padding: 0.8rem 1.15rem;
+  border-radius: var(--r-md);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.15s var(--ease),
+    background 0.15s,
+    box-shadow 0.15s;
+}
+.btn-ink {
+  background: var(--ink);
+  color: #fff;
+}
+.btn-ink:hover:not(:disabled) {
+  background: var(--ink-2);
+}
+.btn-pencil {
+  background: var(--pencil);
+  color: var(--ink);
+  box-shadow: 0 2px 0 var(--pencil-deep);
+}
+.btn-pencil:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--pencil-deep);
+}
+.btn-pencil:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 var(--pencil-deep);
+}
+.btn-quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn-quiet:hover:not(:disabled) {
+  background: var(--surface);
+  border-color: var(--ink-soft);
+}
+.btn-danger-soft {
+  background: var(--danger-wash);
+  color: var(--danger);
+}
+.btn-ink:disabled,
+.btn-pencil:disabled,
+.btn-quiet:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-sm-x {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+}
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 9px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.icon-btn:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+.icon-btn.danger:hover {
+  background: var(--danger-wash);
+  color: var(--danger);
+}
+
+/* Campos */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.field > label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+.field .hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.field .error {
+  font-size: 0.82rem;
+  color: var(--danger);
+  font-weight: 500;
+}
+.input {
+  width: 100%;
+  font: 500 0.975rem var(--font-body);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 0.8rem 0.95rem;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.input::placeholder {
+  color: #a5acc8;
+}
+.input:hover {
+  border-color: var(--ink-soft);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px var(--pencil-wash);
+}
+.input:disabled {
+  background: var(--paper);
+  color: var(--muted);
+}
+.input[aria-invalid="true"] {
+  border-color: var(--danger);
+  background: #fffafb;
+}
+.input-wrap {
+  position: relative;
+}
+.input-wrap .input {
+  padding-right: 2.9rem;
+}
+.input-wrap .toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Chips y estados */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font: 600 0.78rem var(--font-body);
+  padding: 0.28rem 0.65rem;
+  border-radius: 99px;
+  background: var(--paper);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.chip.is-super {
+  background: var(--ink);
+  color: var(--pencil);
+  border-color: var(--ink);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font: 600 0.8rem var(--font-body);
+  padding: 0.25rem 0.7rem;
+  border-radius: 99px;
+}
+.pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.pill.on {
+  background: var(--teal-wash);
+  color: var(--teal);
+}
+.pill.off {
+  background: var(--danger-wash);
+  color: var(--danger);
+}
+.code {
+  font:
+    600 0.8rem ui-monospace,
+    "SFMono-Regular",
+    Menlo,
+    monospace;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  color: var(--ink-2);
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2.5px solid currentColor;
+  border-right-color: transparent;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.skeleton {
+  background: linear-gradient(90deg, #eceef6 25%, #f5f6fb 50%, #eceef6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

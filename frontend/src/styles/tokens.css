@@ -1,0 +1,23 @@
+:root {
+  /* Paleta "cuaderno": tinta, papel y un único acento lápiz */
+  --ink: #1B2340; --ink-2: #2A3563; --ink-soft: #8F98BD;
+  --paper: #F6F7FB; --surface: #FFFFFF; --line: #E2E5F0;
+  --text: #1B2340; --muted: #646C8A;
+  --pencil: #FFC21A; --pencil-deep: #E8A800; --pencil-wash: #FFF4CC;
+  --teal: #0C8A84; --teal-wash: #DDF3F1;
+  --danger: #C8304A; --danger-wash: #FBE4E8; --margin-red: #E26D6D;
+
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', sans-serif;
+  --font-body: 'Figtree', system-ui, sans-serif;
+
+  --r-sm: 6px; --r-md: 10px; --r-lg: 18px;
+  --shadow-pop: 0 18px 48px -12px rgba(27, 35, 64, .28);
+  --sidebar-w: 264px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+
+  --bs-body-font-family: var(--font-body);
+  --bs-body-color: var(--text);
+  --bs-body-bg: var(--paper);
+  --bs-border-color: var(--line);
+  --bs-link-color: var(--ink-2);
+}
