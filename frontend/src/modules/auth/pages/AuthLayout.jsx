@@ -9,7 +9,7 @@ export default function AuthLayout({ children }) {
           <h1>Cada curso, cada nota, <em>en su lugar.</em></h1>
           <p>La gestión de tu institución, ordenada como un cuaderno bien llevado.</p>
         </div>
-        <small style={{ color: '#8F98BD' }}>Acceso exclusivo para personal, docentes y representantes.</small>
+        <small style={{ color: 'var(--sidebar-muted)' }}>Acceso exclusivo para personal, docentes y representantes.</small>
       </section>
       <main className="auth-form"><div className="auth-card">{children}</div></main>
     </div>

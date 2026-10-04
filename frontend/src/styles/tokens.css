@@ -1,23 +1,79 @@
 :root {
-  /* Paleta "cuaderno": tinta, papel y un único acento lápiz */
-  --ink: #1B2340; --ink-2: #2A3563; --ink-soft: #8F98BD;
-  --paper: #F6F7FB; --surface: #FFFFFF; --line: #E2E5F0;
-  --text: #1B2340; --muted: #646C8A;
-  --pencil: #FFC21A; --pencil-deep: #E8A800; --pencil-wash: #FFF4CC;
-  --teal: #0C8A84; --teal-wash: #DDF3F1;
-  --danger: #C8304A; --danger-wash: #FBE4E8; --margin-red: #E26D6D;
+  /* ───── Identidad gráfica · Gestión Escolar ───── */
 
-  --font-display: 'Bricolage Grotesque', 'Segoe UI', sans-serif;
-  --font-body: 'Figtree', system-ui, sans-serif;
+  /* Paleta */
+  --primary: #1e3a5f;
+  --primary-dark: #142a44;
+  --secondary: #2563eb;
+  --secondary-hover: #1d4ed8;
+  --accent: #0ea5a4;
 
-  --r-sm: 6px; --r-md: 10px; --r-lg: 18px;
-  --shadow-pop: 0 18px 48px -12px rgba(27, 35, 64, .28);
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --info: #2563eb;
+
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --text: #172033;
+  --text-2: #64748b;
+  --border: #e2e8f0;
+
+  /* Tintes suaves (fondos de estados, hover, iconos) */
+  --secondary-wash: #eff6ff;
+  --secondary-wash-2: #dbeafe;
+  --accent-wash: #d9f4f3;
+  --success-wash: #dcfce7;
+  --warning-wash: #fef3c7;
+  --error-wash: #fee2e2;
+  --surface-alt: #f8fafc;
+
+  /* Sidebar */
+  --sidebar-bg: #1e3a5f;
+  --sidebar-text: #cbd5e1;
+  --sidebar-muted: #8fa3bf;
+
+  /* Tipografías: Inter (texto/UI/números) · Manrope (títulos) */
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Manrope", "Inter", system-ui, sans-serif;
+
+  /* Radios 8–12px y sombras muy ligeras */
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(23, 32, 51, 0.04), 0 1px 3px rgba(23, 32, 51, 0.06);
+  --shadow-md: 0 4px 12px -2px rgba(23, 32, 51, 0.08);
+  --shadow-pop: 0 18px 48px -12px rgba(20, 42, 68, 0.28);
+  --ring: 0 0 0 4px rgba(37, 99, 235, 0.16);
+
   --sidebar-w: 264px;
-  --ease: cubic-bezier(.2, .7, .2, 1);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
+  /* ───── Alias de compatibilidad (nombres usados en el resto del código) ───── */
+  --ink: var(--primary);
+  --ink-2: var(--primary-dark);
+  --ink-soft: #94a3b8;
+  --paper: var(--bg);
+  --line: var(--border);
+  --muted: var(--text-2);
+  --pencil: var(--secondary);
+  --pencil-deep: var(--secondary-hover);
+  --pencil-wash: var(--secondary-wash);
+  --teal: var(--success);
+  --teal-wash: var(--success-wash);
+  --danger: var(--error);
+  --danger-wash: var(--error-wash);
+
+  /* Bootstrap */
   --bs-body-font-family: var(--font-body);
   --bs-body-color: var(--text);
-  --bs-body-bg: var(--paper);
-  --bs-border-color: var(--line);
-  --bs-link-color: var(--ink-2);
+  --bs-body-bg: var(--bg);
+  --bs-border-color: var(--border);
+  --bs-link-color: var(--secondary);
+  --bs-link-hover-color: var(--secondary-hover);
+  --bs-link-color-rgb: 37, 99, 235;
+  --bs-link-hover-color-rgb: 29, 78, 216;
+  --bs-primary: var(--secondary);
+  --bs-primary-rgb: 37, 99, 235;
+  --bs-border-radius: 8px;
 }
