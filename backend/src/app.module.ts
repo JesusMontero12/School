@@ -8,8 +8,15 @@ import { PrismaExceptionFilter } from './common/filters/prisma-exception.filter'
 import { JwtAuthGuard, PermissionsGuard, RolesGuard } from './common/guards/guards';
 import { MailModule } from './common/mail/mail.module';
 import { PrismaModule } from './common/prisma/prisma.module';
+import { EnrollmentsModule } from './enrollments/enrollments.module';
+import { GradeLevelsModule } from './grade-levels/grade-levels.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { RepresentativesModule } from './representatives/representatives.module';
+import { RequirementTypesModule } from './requirement-types/requirement-types.module';
 import { RolesModule } from './roles/roles.module';
+import { SchoolYearsModule } from './school-years/school-years.module';
+import { SectionsModule } from './sections/sections.module';
+import { StudentsModule } from './students/students.module';
 import { UsersModule } from './users/users.module';
 
 const REQUIRED_ENV = ['DATABASE_URL', 'JWT_ACCESS_SECRET'];
@@ -29,7 +36,9 @@ const REQUIRED_ENV = ['DATABASE_URL', 'JWT_ACCESS_SECRET'];
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
     PrismaModule, MailModule, AuditModule,
     AuthModule, UsersModule, RolesModule, PermissionsModule,
-    // Próximos módulos: StudentsModule, TeachersModule, EnrollmentsModule, GradesModule, ...
+    SchoolYearsModule, GradeLevelsModule, SectionsModule, RequirementTypesModule,
+    StudentsModule, RepresentativesModule, EnrollmentsModule,
+    // Próximos módulos: TeachersModule, GradesModule, ...
   ],
   providers: [
     // El orden importa: límite de peticiones → autenticación → roles → permisos

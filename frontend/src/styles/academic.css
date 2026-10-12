@@ -1,0 +1,666 @@
+/* ───── Núcleo académico · usa solo los tokens de la identidad gráfica ───── */
+
+.muted-text {
+  color: var(--text-2);
+}
+.page-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text-2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  text-decoration: none;
+}
+.page-back:hover {
+  color: var(--secondary);
+}
+
+/* Etiquetas de estado */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.tag.ok {
+  background: var(--success-wash);
+  color: #166534;
+}
+.tag.warn {
+  background: var(--warning-wash);
+  color: #92400e;
+}
+.tag.bad {
+  background: var(--error-wash);
+  color: #991b1b;
+}
+.tag.info {
+  background: var(--secondary-wash-2);
+  color: var(--primary);
+}
+.tag.muted {
+  background: #eef2f7;
+  color: var(--text-2);
+}
+
+/* Fotos */
+.photo {
+  display: inline-block;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  background: var(--secondary-wash);
+}
+.photo.sm {
+  width: 34px;
+  height: 34px;
+}
+.photo.md {
+  width: 52px;
+  height: 52px;
+}
+.photo.lg {
+  width: 96px;
+  height: 96px;
+}
+.photo.fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--primary);
+}
+.photo.sm.fallback {
+  font-size: 0.8rem;
+}
+.photo.md.fallback {
+  font-size: 1.05rem;
+}
+.photo.lg.fallback {
+  font-size: 1.9rem;
+}
+
+/* Pestañas */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.1rem;
+  overflow-x: auto;
+}
+.tabs button {
+  border: 0;
+  background: none;
+  padding: 0.65rem 0.95rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-2);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+}
+.tabs button:hover {
+  color: var(--text);
+}
+.tabs button.active {
+  color: var(--secondary);
+  border-bottom-color: var(--secondary);
+}
+.tabs .count {
+  margin-left: 0.4rem;
+  background: #eef2f7;
+  color: var(--text-2);
+  border-radius: 999px;
+  padding: 0 0.45rem;
+  font-size: 0.72rem;
+}
+
+/* Ficha clave/valor */
+.kv {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1rem 1.5rem;
+  margin: 0;
+}
+.kv dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+}
+.kv dd {
+  margin: 0.15rem 0 0;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.panel-body {
+  padding: 1.25rem;
+}
+.panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.panel-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+}
+.stack {
+  display: grid;
+  gap: 1.1rem;
+}
+
+/* Cabecera de detalle */
+.detail-head {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+.detail-head h1 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+}
+.detail-head .meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.35rem;
+  color: var(--text-2);
+  font-size: 0.9rem;
+}
+.detail-head .spacer {
+  flex: 1;
+}
+
+/* Cupo */
+.occupancy {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 130px;
+}
+.occupancy .bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: #e8edf4;
+  overflow: hidden;
+}
+.occupancy .bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+.occupancy .bar .ok {
+  background: var(--accent);
+}
+.occupancy .bar .warn {
+  background: var(--warning);
+}
+.occupancy .bar .bad {
+  background: var(--error);
+}
+.occupancy small {
+  color: var(--text-2);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Años escolares */
+.year-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+.year-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+}
+.year-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
+}
+.year-card .range {
+  color: var(--text-2);
+  font-size: 0.875rem;
+}
+.term-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  padding: 0 1.25rem 1.25rem;
+}
+.term {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 0.8rem 0.9rem;
+  background: var(--surface-alt);
+  display: grid;
+  gap: 0.35rem;
+}
+.term.active {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+.term strong {
+  font-size: 0.9rem;
+}
+.term small {
+  color: var(--text-2);
+}
+.term .row-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+.counts {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0 1.25rem 1rem;
+}
+@media (max-width: 760px) {
+  .term-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Grados y secciones */
+.grade-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.grade-block header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.grade-block h2 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.grade-block .num {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+/* Formularios */
+.form-section {
+  margin-bottom: 1.4rem;
+}
+.form-section > h3 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  color: var(--primary);
+}
+.select-input {
+  appearance: auto;
+}
+textarea.input {
+  min-height: 84px;
+  resize: vertical;
+}
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 500;
+}
+.check-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--secondary);
+}
+
+/* Búsqueda con resultados seleccionables */
+.pick-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.pick {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.pick:hover:not(:disabled) {
+  border-color: var(--secondary);
+  background: var(--secondary-wash);
+}
+.pick:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.pick strong {
+  display: block;
+  font-size: 0.92rem;
+}
+.pick small {
+  color: var(--text-2);
+}
+.pick .grow {
+  flex: 1;
+  min-width: 0;
+}
+.selected-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--accent);
+  background: var(--accent-wash);
+  border-radius: var(--r-md);
+}
+.selected-card .grow {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Asistente de inscripción */
+.stepper {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.stepper .step {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.stepper .step .n {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2f7;
+  font-size: 0.75rem;
+}
+.stepper .step.current {
+  color: var(--primary);
+  border-color: var(--secondary);
+  background: var(--secondary-wash);
+}
+.stepper .step.current .n {
+  background: var(--secondary);
+  color: #fff;
+}
+.stepper .step.done .n {
+  background: var(--success);
+  color: #fff;
+}
+.wizard-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+.rep-card {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1rem;
+  background: var(--surface);
+}
+.rep-card + .rep-card {
+  margin-top: 0.85rem;
+}
+.rep-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+}
+.mode-switch {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.mode-switch button {
+  border: 0;
+  background: var(--surface);
+  padding: 0.5rem 0.95rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+.mode-switch button.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Documentos de la inscripción */
+.doc-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.doc-row:last-child {
+  border-bottom: 0;
+}
+.doc-row .name {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.doc-row small {
+  color: var(--text-2);
+  display: block;
+  margin-top: 0.15rem;
+}
+.doc-row .doc-actions {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.progress {
+  height: 8px;
+  border-radius: 999px;
+  background: #e8edf4;
+  overflow: hidden;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+}
+.callout {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  font-size: 0.9rem;
+}
+.callout.warn {
+  background: var(--warning-wash);
+  border-color: #f5d58a;
+  color: #7a3d08;
+}
+.callout.bad {
+  background: var(--error-wash);
+  border-color: #f4b4b4;
+  color: #7f1d1d;
+}
+.callout.ok {
+  background: var(--success-wash);
+  border-color: #a7e3bb;
+  color: #14532d;
+}
+
+/* Historial de fotos */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.9rem;
+}
+.photo-slot {
+  border: 1px dashed var(--border);
+  border-radius: var(--r-md);
+  padding: 0.85rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  text-align: center;
+  background: var(--surface-alt);
+}
+.photo-slot.filled {
+  border-style: solid;
+  background: var(--surface);
+}
+.photo-slot strong {
+  font-size: 0.85rem;
+}
+.photo-slot small {
+  color: var(--text-2);
+}
+
+/* Historial de cambios */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.timeline li {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.timeline li:last-child {
+  border-bottom: 0;
+}
+.timeline .when {
+  color: var(--text-2);
+  font-size: 0.8rem;
+}
+.timeline .changes {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+.timeline .changes b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.row-link {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+.row-link:hover {
+  color: var(--secondary);
+}
+tr.clickable {
+  cursor: pointer;
+}
+tr.clickable:hover {
+  background: var(--surface-alt);
+}
+
+a.btn-pencil,
+a.btn-ink,
+a.btn-quiet,
+a.btn-danger-soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+.btn-reset {
+  border: 0;
+  background: none;
+  padding: 0;
+  text-align: left;
+}
+
+/* Foto del alumno al inicio del formulario */
+.photo-picker {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-alt);
+  flex-wrap: wrap;
+}
+.photo-picker .photo.lg {
+  border: 2px solid var(--surface);
+  box-shadow: var(--shadow-sm);
+}

@@ -8,7 +8,16 @@ import ForgotPasswordPage from '../modules/auth/pages/ForgotPasswordPage';
 import LoginPage from '../modules/auth/pages/LoginPage';
 import ResetPasswordPage from '../modules/auth/pages/ResetPasswordPage';
 import DashboardPage from '../modules/dashboard/DashboardPage';
+import EnrollmentDetailPage from '../modules/enrollments/EnrollmentDetailPage';
+import EnrollmentsPage from '../modules/enrollments/EnrollmentsPage';
+import EnrollmentWizardPage from '../modules/enrollments/EnrollmentWizardPage';
 import PermissionsPage from '../modules/permissions/PermissionsPage';
+import RepresentativesPage from '../modules/representatives/RepresentativesPage';
+import RequirementsPage from '../modules/requirements/RequirementsPage';
+import SchoolYearsPage from '../modules/school-years/SchoolYearsPage';
+import SectionsPage from '../modules/sections/SectionsPage';
+import StudentDetailPage from '../modules/students/StudentDetailPage';
+import StudentsPage from '../modules/students/StudentsPage';
 import RolesPage from '../modules/roles/RolesPage';
 import UsersPage from '../modules/users/UsersPage';
 
@@ -33,6 +42,15 @@ export const router = createBrowserRouter([
       element: <AppShell />,
       children: [
         guarded('dashboard.view', '/', <DashboardPage />),
+        guarded('enrollment.view', '/enrollments', <EnrollmentsPage />),
+        guarded('enrollment.create', '/enrollments/new', <EnrollmentWizardPage />),
+        guarded('enrollment.view', '/enrollments/:id', <EnrollmentDetailPage />),
+        guarded('student.view', '/students', <StudentsPage />),
+        guarded('student.view', '/students/:id', <StudentDetailPage />),
+        guarded('representative.view', '/representatives', <RepresentativesPage />),
+        guarded('school_year.view', '/school-years', <SchoolYearsPage />),
+        guarded('section.view', '/sections', <SectionsPage />),
+        guarded('requirement_type.view', '/requirements', <RequirementsPage />),
         guarded('user.view', '/users', <UsersPage />),
         guarded('role.view', '/roles', <RolesPage />),
         guarded('permission.view', '/permissions', <PermissionsPage />),

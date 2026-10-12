@@ -32,6 +32,7 @@ model User {
   student        Student?
   teacher        Teacher?
   representative Representative?
+  createdEnrollments Enrollment[]
 
   @@index([deletedAt])
   @@map("users")
@@ -140,41 +141,166 @@ model AuditLog {
   @@map("audit_logs")
 }
 
-// ───────────── TABLAS RESERVADAS (módulos futuros) ─────────────
-// Estructura mínima para fijar relaciones; se ampliará al construir cada módulo.
+// ───────────── ACADÉMICO · ENUMS ─────────────
 
-model Representative {
-  id         String   @id @default(uuid())
-  userId     String?  @unique @map("user_id")
-  firstName  String   @map("first_name")
-  lastName   String   @map("last_name")
-  documentId String   @unique @map("document_id")
-  phone      String?
-  createdAt  DateTime @default(now()) @map("created_at")
+enum SchoolYearStatus {
+  PLANIFICADO
+  ACTIVO
+  CERRADO
 
-  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  students Student[]
-  invoices Invoice[]
-
-  @@map("representatives")
+  @@map("school_year_status")
 }
 
-model Student {
-  id               String    @id @default(uuid())
-  userId           String?   @unique @map("user_id")
-  representativeId String?   @map("representative_id")
-  firstName        String    @map("first_name")
-  lastName         String    @map("last_name")
-  documentId       String?   @unique @map("document_id")
-  birthDate        DateTime? @map("birth_date")
-  createdAt        DateTime  @default(now()) @map("created_at")
+enum TermStatus {
+  PENDIENTE
+  ACTIVO
+  CERRADO
 
-  user           User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
-  representative Representative? @relation(fields: [representativeId], references: [id], onDelete: SetNull)
-  enrollments    Enrollment[]
-
-  @@map("students")
+  @@map("term_status")
 }
+
+enum StudentStatus {
+  ACTIVO
+  INACTIVO
+  RETIRADO
+  EGRESADO
+
+  @@map("student_status")
+}
+
+// Ciclo de vida de la inscripción (el estado de cada documento es independiente):
+//   PENDIENTE → ACTIVA     cuando todos los requisitos obligatorios están ENTREGADOS
+//   PENDIENTE → ANULADA    si el proceso no se completa
+//   ACTIVA    → RETIRADA
+// RETIRADA y ANULADA son históricos: se conservan y no vuelven a otro estado.
+enum EnrollmentStatus {
+  PENDIENTE
+  ACTIVA
+  RETIRADA
+  ANULADA
+
+  @@map("enrollment_status")
+}
+
+// Condición del alumno: regular, repitiente o con materia pendiente
+enum StudentCondition {
+  REGULAR
+  REPITIENTE
+  MATERIA_PENDIENTE
+
+  @@map("student_condition")
+}
+
+// El número de identificación puede ser cédula o cédula escolar
+enum IdentificationType {
+  CEDULA
+  CEDULA_ESCOLAR
+
+  @@map("identification_type")
+}
+
+enum Sex {
+  MASCULINO
+  FEMENINO
+
+  @@map("sex")
+}
+
+// Etiquetas en la interfaz: Madre, Padre, Abuelo(a), Tío(a), Hermano(a), Tutor legal, Otro
+enum Relationship {
+  MADRE
+  PADRE
+  ABUELO_A
+  TIO_A
+  HERMANO_A
+  TUTOR_LEGAL
+  OTRO
+
+  @@map("relationship")
+}
+
+enum DocumentStatus {
+  PENDIENTE
+  ENTREGADO
+
+  @@map("document_status")
+}
+
+// ───────────── ACADÉMICO · ESTRUCTURA ─────────────
+
+model SchoolYear {
+  id        String           @id @default(uuid())
+  name      String           @unique // ej. "2026-2027"
+  startDate DateTime         @map("start_date") @db.Date
+  endDate   DateTime         @map("end_date") @db.Date
+  status    SchoolYearStatus @default(PLANIFICADO)
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+
+  terms       AcademicTerm[]
+  enrollments Enrollment[]
+  photos      StudentPhoto[]
+
+  @@index([status])
+  @@map("school_years")
+}
+
+// Momento pedagógico. Cada año escolar tiene exactamente 3 (número 1, 2 y 3).
+model AcademicTerm {
+  id           String     @id @default(uuid())
+  schoolYearId String     @map("school_year_id")
+  number       Int
+  name         String // "Primer Momento Pedagógico", ...
+  startDate    DateTime   @map("start_date") @db.Date
+  endDate      DateTime   @map("end_date") @db.Date
+  status       TermStatus @default(PENDIENTE)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  schoolYear SchoolYear @relation(fields: [schoolYearId], references: [id], onDelete: Cascade)
+
+  @@unique([schoolYearId, number])
+  @@map("academic_terms")
+}
+
+// Año / grado de Educación Media (1er a 5to Año).
+// Se llama GradeLevel porque "Grade" ya es la calificación.
+model GradeLevel {
+  id        String   @id @default(uuid())
+  number    Int      @unique // 1..5: orden y vínculo con las fotos
+  name      String   @unique // "1er Año", "2do Año", ...
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  sections Section[]
+  photos   StudentPhoto[]
+
+  @@map("grade_levels")
+}
+
+// La sección no depende del año escolar: se reutiliza año tras año.
+// El cupo se calcula contando inscripciones ACTIVAS de la sección en el año escolar.
+model Section {
+  id            String   @id @default(uuid())
+  gradeLevelId  String   @map("grade_level_id")
+  name          String // "A", "B", "C"...
+  maxCapacity   Int      @map("max_capacity")
+  isActive      Boolean  @default(true) @map("is_active")
+  coordinatorId String?  @map("coordinator_id") // profesor responsable (módulo futuro)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  gradeLevel  GradeLevel   @relation(fields: [gradeLevelId], references: [id], onDelete: Restrict)
+  coordinator Teacher?     @relation(fields: [coordinatorId], references: [id], onDelete: SetNull)
+  enrollments Enrollment[]
+
+  @@unique([gradeLevelId, name])
+  @@index([coordinatorId])
+  @@map("sections")
+}
+
+// ───────────── ACADÉMICO · PERSONAS ─────────────
 
 model Teacher {
   id         String   @id @default(uuid())
@@ -187,26 +313,209 @@ model Teacher {
   user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   grades   Grade[]
   payrolls Payroll[]
+  sections Section[]
 
   @@map("teachers")
 }
 
-model Enrollment {
+// Entidad independiente y reutilizable. Se crea desde Inscripciones.
+model Student {
+  id         String        @id @default(uuid())
+  userId     String?       @unique @map("user_id")
+  firstName  String        @map("first_name")
+  lastName   String        @map("last_name")
+  identificationType   IdentificationType @map("identification_type")
+  identificationNumber String             @map("identification_number") // cédula o cédula escolar, normalizada
+  sigesCode  String?       @unique @map("siges_code")
+  email      String? // correo de contacto del alumno (opcional, se guarda en minúsculas; no es único)
+  birthDate  DateTime      @map("birth_date") @db.Date
+  birthPlace String        @map("birth_place")
+  sex        Sex
+  address    String
+  status     StudentStatus @default(ACTIVO)
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt @map("updated_at")
+
+  user            User?                   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  representatives StudentRepresentative[]
+  photos          StudentPhoto[]
+  enrollments     Enrollment[]
+
+  @@unique([identificationType, identificationNumber])
+  @@index([identificationNumber]) // búsqueda por número sin conocer el tipo
+  @@index([lastName, firstName])
+  @@index([status])
+  @@map("students")
+}
+
+// Entidad independiente y reutilizable. Se crea desde Inscripciones.
+model Representative {
   id         String   @id @default(uuid())
-  studentId  String   @map("student_id")
-  schoolYear String   @map("school_year")
-  level      String
-  section    String?
-  status     String   @default("ACTIVE")
+  userId     String?  @unique @map("user_id")
+  firstName  String   @map("first_name")
+  lastName   String   @map("last_name")
+  documentId String   @unique @map("document_id")
+  phone      String?
+  email      String? // correo de contacto (opcional, minúsculas; no es único)
+  address    String?
+  occupation String? // oficio
+  photoKey   String?  @map("photo_key") // clave en el almacenamiento, nunca una URL pública
+  isActive   Boolean  @default(true) @map("is_active")
   createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  student    Student      @relation(fields: [studentId], references: [id], onDelete: Restrict)
-  grades     Grade[]
-  attendance Attendance[]
+  user        User?                      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  students    StudentRepresentative[]
+  enrollments EnrollmentRepresentative[]
+  invoices    Invoice[]
 
-  @@unique([studentId, schoolYear])
+  @@index([lastName, firstName])
+  @@map("representatives")
+}
+
+// Vínculo permanente alumno ↔ representante. El parentesco vive aquí, no en el representante.
+model StudentRepresentative {
+  studentId          String       @map("student_id")
+  representativeId   String       @map("representative_id")
+  relationship       Relationship
+  relationshipDetail String?      @map("relationship_detail") // cuando es OTRO
+  createdAt          DateTime     @default(now()) @map("created_at")
+
+  student        Student        @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  representative Representative @relation(fields: [representativeId], references: [id], onDelete: Restrict)
+
+  @@id([studentId, representativeId])
+  @@index([representativeId])
+  @@map("student_representatives")
+}
+
+// Historial fotográfico: máximo una foto por grado (5 en total por alumno).
+// Si repite grado, la nueva foto reemplaza a la anterior (upsert sobre la clave única).
+// La "foto actual" se deriva: es la del grado más alto disponible.
+model StudentPhoto {
+  id           String   @id @default(uuid())
+  studentId    String   @map("student_id")
+  gradeLevelId String   @map("grade_level_id")
+  schoolYearId String   @map("school_year_id") // año escolar en que se tomó
+  storageKey   String   @unique @map("storage_key")
+  mimeType     String   @map("mime_type")
+  sizeBytes    Int      @map("size_bytes")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  student    Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  gradeLevel GradeLevel @relation(fields: [gradeLevelId], references: [id], onDelete: Restrict)
+  schoolYear SchoolYear @relation(fields: [schoolYearId], references: [id], onDelete: Restrict)
+
+  @@unique([studentId, gradeLevelId])
+  @@map("student_photos")
+}
+
+// ───────────── ACADÉMICO · INSCRIPCIONES ─────────────
+
+// Núcleo de la matrícula. Referencia al Alumno (no copia sus datos).
+// El año/grado se obtiene de la sección: no se duplica para que nunca pueda contradecirla.
+// Preparada para colgar luego: asignaturas, asistencia, notas, pagos e historial académico.
+//
+// "Expediente completo" NO se guarda: se calcula (ningún documento obligatorio PENDIENTE).
+// "Plazo vencido" tampoco: es status = PENDIENTE y documentsDueDate anterior a hoy.
+model Enrollment {
+  id             String           @id @default(uuid())
+  studentId      String           @map("student_id")
+  schoolYearId   String           @map("school_year_id")
+  sectionId      String           @map("section_id")
+  enrollmentDate DateTime         @map("enrollment_date") @db.Date
+  receiptNumber  String           @unique @map("receipt_number")
+  condition      StudentCondition @default(REGULAR)
+  previousSchool String?          @map("previous_school") // plantel de procedencia
+  status         EnrollmentStatus @default(PENDIENTE)
+  documentsDueDate DateTime?      @map("documents_due_date") @db.Date // plazo para completar requisitos
+  notes          String?
+  createdById    String?          @map("created_by_id")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  student         Student                    @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  schoolYear      SchoolYear                 @relation(fields: [schoolYearId], references: [id], onDelete: Restrict)
+  section         Section                    @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  createdBy       User?                      @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  representatives EnrollmentRepresentative[]
+  documents       EnrollmentDocument[]
+  grades          Grade[]
+  attendance      Attendance[]
+
+  // Un alumno puede tener varias inscripciones por año (históricas ANULADA/RETIRADA, una PENDIENTE
+  // en proceso y una ACTIVA), pero como máximo UNA ACTIVA y UNA PENDIENTE: dos índices únicos
+  // parciales en SQL (ver migración de restricciones).
+  @@index([studentId, schoolYearId])
+  @@index([schoolYearId, sectionId, status])
+  @@index([sectionId])
   @@map("enrollments")
 }
+
+// Quién representa al alumno en esa inscripción. La BD garantiza COMO MÁXIMO un principal
+// (índice único parcial). Que una inscripción ACTIVA tenga uno es regla del servicio.
+model EnrollmentRepresentative {
+  enrollmentId     String  @map("enrollment_id")
+  representativeId String  @map("representative_id")
+  isPrimary        Boolean @default(false) @map("is_primary")
+
+  enrollment     Enrollment     @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  representative Representative @relation(fields: [representativeId], references: [id], onDelete: Restrict)
+
+  @@id([enrollmentId, representativeId])
+  @@index([representativeId])
+  @@map("enrollment_representatives")
+}
+
+// ───────────── ACADÉMICO · REQUISITOS ─────────────
+
+// Catálogo de requisitos. Se siembran los 8 base y el colegio puede agregar otros.
+model RequirementType {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  description String?
+  isRequired  Boolean  @default(true) @map("is_required")
+  isActive    Boolean  @default(true) @map("is_active")
+  isSystem    Boolean  @default(false) @map("is_system")
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  documents EnrollmentDocument[]
+
+  @@map("requirement_types")
+}
+
+// Pertenece a UNA inscripción: el expediente de 2026-2027 no se mezcla con el de 2027-2028.
+// Al crear la inscripción se genera una fila PENDIENTE por cada requisito activo.
+// Su estado (PENDIENTE/ENTREGADO) es independiente del estado de la inscripción.
+model EnrollmentDocument {
+  id                String         @id @default(uuid())
+  enrollmentId      String         @map("enrollment_id")
+  requirementTypeId String         @map("requirement_type_id")
+  status            DocumentStatus @default(PENDIENTE)
+  storageKey        String?        @unique @map("storage_key") // archivo adjunto (opcional)
+  originalName      String?        @map("original_name")
+  mimeType          String?        @map("mime_type")
+  sizeBytes         Int?           @map("size_bytes")
+  deliveredAt       DateTime?      @map("delivered_at") @db.Date
+  notes             String?
+  createdAt         DateTime       @default(now()) @map("created_at")
+  updatedAt         DateTime       @updatedAt @map("updated_at")
+
+  enrollment      Enrollment      @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  requirementType RequirementType @relation(fields: [requirementTypeId], references: [id], onDelete: Restrict)
+
+  @@unique([enrollmentId, requirementTypeId])
+  @@index([status])
+  @@map("enrollment_documents")
+}
+
+// ───────────── TABLAS RESERVADAS (módulos futuros) ─────────────
+// Estructura mínima para fijar relaciones; se ampliará al construir cada módulo.
+// (Grade.subject/period pasarán a FK de Asignatura y AcademicTerm cuando se implementen.)
 
 model Grade {
   id           String    @id @default(uuid())
