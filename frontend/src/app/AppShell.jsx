@@ -17,7 +17,7 @@ export default function AppShell() {
 
   useEffect(() => setOpen(false), [pathname]);
 
-  const groups = groupNav(NAV_ITEMS.filter((i) => can(i.permission)));
+  const groups = groupNav(NAV_ITEMS.filter((i) => (i.visible ? i.visible(can) : can(i.permission))));
   const exit = async () => {
     await logout();
     navigate("/login", { replace: true });

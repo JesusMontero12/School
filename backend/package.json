@@ -10,9 +10,12 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
-    "prisma:seed": "prisma db seed"
+    "prisma:seed": "prisma db seed",
+    "test:calc": "node --require ts-node/register --test src/grades/grade-calculator.test.ts"
   },
-  "prisma": { "seed": "ts-node prisma/seed.ts" },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.0",
@@ -44,5 +47,11 @@
     "prisma": "^6.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.0"
+  },
+  "allowScripts": {
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "prisma@6.19.3": true,
+    "argon2@0.41.1": true
   }
 }

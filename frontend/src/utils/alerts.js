@@ -20,3 +20,14 @@ export async function confirmAction({ title, text, confirmText, danger = false }
   });
   return isConfirmed;
 }
+
+/** Pide un texto (p. ej. el motivo de una corrección). Devuelve el texto, o null si se cancela. */
+export async function promptText({ title, text, label, confirmText, minLength = 5 }) {
+  const { isConfirmed, value } = await base.fire({
+    title, text, input: 'text', inputLabel: label, inputAttributes: { maxlength: 300 }, showCancelButton: true,
+    confirmButtonText: confirmText, cancelButtonText: 'Cancelar',
+    customClass: { popup: 'swal-ink', confirmButton: 'btn-ink', cancelButton: 'btn-quiet' },
+    inputValidator: (v) => (v && v.trim().length >= minLength ? null : `Escribe al menos ${minLength} caracteres`),
+  });
+  return isConfirmed ? value.trim() : null;
+}

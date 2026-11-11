@@ -21,8 +21,11 @@ const PERMISSIONS: Record<string, string[]> = {
   student: ['student.view', 'student.edit'],
   representative: ['representative.view', 'representative.edit'],
   enrollment: ['enrollment.view', 'enrollment.create', 'enrollment.edit'],
-  // Módulos futuros
+  // Gestión académica
+  subject: ['subject.view', 'subject.create', 'subject.edit'],
   teacher: crud('teacher'),
+  assignment: ['assignment.view', 'assignment.create', 'assignment.edit'],
+  // Módulos futuros
   grade: ['grade.view', 'grade.create', 'grade.edit', 'grade.approve'],
   attendance: ['attendance.view', 'attendance.register'],
   report: ['report.view', 'report.generate'],
@@ -49,6 +52,7 @@ const ROLES = [
       'dashboard.view', 'user.view',
       ...only('student', 'teacher', 'representative', 'enrollment', 'section', 'invoice', 'payment'),
       'school_year.view', 'grade_level.view', 'requirement_type.view',
+      'subject.view', 'assignment.view', 'grade.view',
       'attendance.view', 'report.view',
     ],
   },
@@ -56,7 +60,7 @@ const ROLES = [
     code: 'DOCENTE', name: 'Docente', description: 'Notas y asistencia de sus cursos',
     permissions: [
       'dashboard.view', 'student.view', 'enrollment.view',
-      'school_year.view', 'grade_level.view', 'section.view',
+      'school_year.view', 'grade_level.view', 'section.view', 'subject.view', 'assignment.view',
       'grade.view', 'grade.create', 'grade.edit', 'attendance.view', 'attendance.register',
     ],
   },

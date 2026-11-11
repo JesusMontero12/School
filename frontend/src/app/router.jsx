@@ -11,14 +11,21 @@ import DashboardPage from '../modules/dashboard/DashboardPage';
 import EnrollmentDetailPage from '../modules/enrollments/EnrollmentDetailPage';
 import EnrollmentsPage from '../modules/enrollments/EnrollmentsPage';
 import EnrollmentWizardPage from '../modules/enrollments/EnrollmentWizardPage';
+import GradesPage from '../modules/grades/GradesPage';
 import PermissionsPage from '../modules/permissions/PermissionsPage';
+import ReportCardPage from '../modules/report-cards/ReportCardPage';
+import ReportCardsPage from '../modules/report-cards/ReportCardsPage';
+import ReportsPage from '../modules/reports/ReportsPage';
 import RepresentativesPage from '../modules/representatives/RepresentativesPage';
 import RequirementsPage from '../modules/requirements/RequirementsPage';
+import AssignmentsPage from '../modules/assignments/AssignmentsPage';
 import SchoolYearsPage from '../modules/school-years/SchoolYearsPage';
 import SectionsPage from '../modules/sections/SectionsPage';
 import StudentDetailPage from '../modules/students/StudentDetailPage';
 import StudentsPage from '../modules/students/StudentsPage';
 import RolesPage from '../modules/roles/RolesPage';
+import SubjectsPage from '../modules/subjects/SubjectsPage';
+import TeachersPage from '../modules/teachers/TeachersPage';
 import UsersPage from '../modules/users/UsersPage';
 
 /** Cada ruta protegida declara el permiso que exige; el backend lo vuelve a validar. */
@@ -51,6 +58,13 @@ export const router = createBrowserRouter([
         guarded('school_year.view', '/school-years', <SchoolYearsPage />),
         guarded('section.view', '/sections', <SectionsPage />),
         guarded('requirement_type.view', '/requirements', <RequirementsPage />),
+        guarded('subject.view', '/subjects', <SubjectsPage />),
+        guarded('teacher.view', '/teachers', <TeachersPage />),
+        guarded('assignment.view', '/assignments', <AssignmentsPage />),
+        guarded('assignment.view', '/grades', <GradesPage />),
+        guarded('grade.view', '/report-cards', <ReportCardsPage />),
+        guarded('grade.view', '/report-cards/:id', <ReportCardPage />),
+        guarded('report.view', '/reports', <ReportsPage />),
         guarded('user.view', '/users', <UsersPage />),
         guarded('role.view', '/roles', <RolesPage />),
         guarded('permission.view', '/permissions', <PermissionsPage />),

@@ -113,6 +113,19 @@ export const AUDIT_ACTIONS = {
   "enrollment.document": "Documento actualizado",
   "enrollment.document_file": "Archivo de documento adjuntado",
   "enrollment.document_file_removed": "Archivo de documento eliminado",
+  "subject.create": "Materia creada",
+  "subject.update": "Materia editada",
+  "subject.term_setting": "Prueba de lapso configurada",
+  "teacher.create": "Docente registrado",
+  "teacher.update": "Docente editado",
+  "assignment.create": "Docente asignado",
+  "assignment.reassign": "Materia reasignada",
+  "assignment.end": "Asignación finalizada",
+  "evaluation.create": "Evaluación creada",
+  "evaluation.update": "Evaluación editada",
+  "evaluation.void": "Evaluación anulada",
+  "grade.scores": "Notas registradas",
+  "grade.correction": "Corrección de notas (momento cerrado)",
 };
 
 export const FIELD_LABELS = {
@@ -134,6 +147,14 @@ export const FIELD_LABELS = {
   previousSchool: "Plantel de procedencia",
   notes: "Observaciones",
   documentsDueDate: "Plazo de documentos",
+  name: "Nombre",
+  description: "Descripción",
+  isActive: "Activo",
+  gradeLevels: "Años",
+  hasLapsoTest: "Prueba de lapso",
+  documentId: "Cédula",
+  phone: "Teléfono",
+  userId: "Usuario",
 };
 
 /** Tamaño máximo de foto que valida el formulario (el backend aplica su propio límite, UPLOAD_MAX_BYTES). */

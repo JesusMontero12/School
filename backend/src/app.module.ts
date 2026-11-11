@@ -9,6 +9,7 @@ import { JwtAuthGuard, PermissionsGuard, RolesGuard } from './common/guards/guar
 import { MailModule } from './common/mail/mail.module';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
+import { GradesModule } from './grades/grades.module';
 import { GradeLevelsModule } from './grade-levels/grade-levels.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RepresentativesModule } from './representatives/representatives.module';
@@ -17,6 +18,9 @@ import { RolesModule } from './roles/roles.module';
 import { SchoolYearsModule } from './school-years/school-years.module';
 import { SectionsModule } from './sections/sections.module';
 import { StudentsModule } from './students/students.module';
+import { SubjectsModule } from './subjects/subjects.module';
+import { TeachersModule } from './teachers/teachers.module';
+import { TeachingAssignmentsModule } from './teaching-assignments/teaching-assignments.module';
 import { UsersModule } from './users/users.module';
 
 const REQUIRED_ENV = ['DATABASE_URL', 'JWT_ACCESS_SECRET'];
@@ -38,7 +42,8 @@ const REQUIRED_ENV = ['DATABASE_URL', 'JWT_ACCESS_SECRET'];
     AuthModule, UsersModule, RolesModule, PermissionsModule,
     SchoolYearsModule, GradeLevelsModule, SectionsModule, RequirementTypesModule,
     StudentsModule, RepresentativesModule, EnrollmentsModule,
-    // Próximos módulos: TeachersModule, GradesModule, ...
+    SubjectsModule, TeachersModule, TeachingAssignmentsModule, GradesModule,
+    // Próximos módulos: GradesModule (evaluaciones y notas), boletines, reportes
   ],
   providers: [
     // El orden importa: límite de peticiones → autenticación → roles → permisos
